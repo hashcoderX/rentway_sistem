@@ -238,7 +238,11 @@ class HomeController extends Controller
 
     public function comapnysetting()
     {
-        $companyId = Auth::user()->company_id;
+
+        if (!Auth::check() || Auth::user()->id == '') {
+            return view('index');
+        } else {
+           $companyId = Auth::user()->company_id;
 
         $company = Company::where('id', $companyId)->first();
         $users = User::where('company_id', $companyId)->get();
@@ -246,5 +250,8 @@ class HomeController extends Controller
         // return $company;
 
         return view('setting.companysetting', compact('company', 'users'));
+        }
+        
+        
     }
 }
